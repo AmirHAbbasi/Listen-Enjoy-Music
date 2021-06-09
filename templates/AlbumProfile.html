@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<style>
+
+.sumbtn{display:none;position:absolute;left:15%;width:50%;bottom:5%;height:6vw;background-color: coral;cursor:pointer;border-style: none;}
+.sumbtn:hover{opacity:0.5;}
+
+
+textarea{display:none;position: absolute;top:5%;left:15%;width:50%;height:30vw;}
+
+#overlay {overflow: scroll;
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+
+#nam {white-space: nowrap;color:black;position:absolute;display: inline;}
+h2 {white-space: nowrap;color:black;position:absolute;display: inline;}
+img{position:absolute;border-radius: 50px;}
+a{text-decoration: none;color:white;}
+a:hover{cursor:pointer;color:yellow;}
+
+.comment {margin-top: 5%;
+  margin: auto;
+  padding: 2%;
+  width: 80%;
+  border-radius : 20px;
+  background-color: #f44336;
+  color: white;
+  opacity: 1;
+  margin-bottom: 15px;
+}
+
+.clsbtn{position: fixed;top: 0;font-size:1000%;position: absolute;right: 0%;color:red;cursor:pointer;}
+.clsbtn:hover{color:white;}
+
+
+
+
+.alert {
+  padding: 2%;
+  border-radius : 20px;
+  background-color: #f44336;
+  color: white;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  margin-bottom: 15px;
+}
+
+.alert:hover {opacity:1;}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+
+
+
+.artistName{
+font-size: 35px;font-size: 15px;}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+<body style="background-color:green">
+
+
+
+<div id="overlay">
+   <p onclick="off()" class="clsbtn">&times;</p>
+
+  <textarea id='lycontent' name='w3review' rows='4' cols='50'>
+  User {{user_name}} Lyric for music {{music_name}}
+  ==================================
+  </textarea>
+  <input id="smbtn" class="sumbtn" onclick="SendLyric()" type='submit' value='Send Lyric'>
+
+
+
+   <div id="contents" style="top:10%"></div>
+</div>
+
+
+
+<p id="chk"></p>
+
+
+
+<h1 id="nam">{{album_info['name']}}</h1>
+
+<h2 id="desc">by <a href="/uprof{{album_info['creator']}}">{{creator['uname']}}</a> | created {{album_info['date']}} | <a href="/genre={{album_info['genre']}}">{{album_info['genre']}}</a></h2>
+
+
+
+<img id="im" src="/cdn/Covers/album/{{iid}}.png" onerror="javascript:this.src='elements/album_def.png'">
+
+
+
+
+<script>
+
+
+var lyric = document.getElementById('lycontent');
+var smbtn = document.getElementById('smbtn');
+
+
+/*<body style="background-size:100% 100%;background-image:linear-gradient(yellow, green, brown, yellow);">*/
+
+var y=screen.height;
+
+var x=screen.width;
+
+var w=60*y/100;
+
+
+var musics ={{musics|safe}}; 
+
+
+
+
+
+ 
+
+ 
+
+
+var num_musics = musics.length;
+
+
+window.onload = function () {
+    var im = document.getElementById("im");
+    
+    var desc = document.getElementById("desc");
+    var name = document.getElementById("nam");
+    
+    
+    name.style.left=(x/10).toString().concat("px");
+    desc.style.left=(x/10).toString().concat("px");
+
+    desc.style.top=(y/10).toString().concat("px");
+    name.style.top=(y/20).toString().concat("px");
+
+    im.style.top=(y/5).toString().concat("px");
+    im.style.left=(x/10).toString().concat("px");
+
+    im.style.width=(x/5).toString().concat("px");
+    im.style.height=(y/2.5).toString().concat("px");;
+
+var top =16*y/100;
+
+var left =30*x/100;
+
+var dx=5*x/100;
+var dy=10*y/100;
+
+left +=dx;
+
+if(num_musics>0){var albumh = document.createElement("H2");document.body.appendChild(albumh);albumh.style=`left:${left}px;top:${top}px`;
+albumh.innerHTML="Musics";}
+
+var init_top= top+dy;
+
+
+
+//var i = 0;
+
+var h=w/9;
+	
+for (j = 0; j <num_musics; j++) {
+    
+  
+
+  var dv = document.createElement("DIV");
+  dv.className = "alert";
+
+  top=init_top+(j%2)*(dy+h);
+  
+   
+
+  dv.style=`position:absolute;left:${left}px;top:${top}px;width:${w}px`; 
+
+  
+ 
+  left+=(j%2)*(dx+w);
+
+
+  dv.setAttribute('onclick', "play({})".replace("{}",musics[j][0]));
+
+  var name = document.createElement("STRONG");
+
+  name.innerHTML=musics[j][1];
+
+  var play = document.createElement("A");
+  play.innerHTML="PLAY! |"
+  play.setAttribute('onclick', "play({})".replace("{}",musics[j][0]));
+
+  document.body.appendChild(dv);
+  dv.appendChild(name);
+
+  
+
+ /*
+  <div class="alert">  
+  <strong style="margin-left: 15px;">music[1]</strong> | length : music[3]:music[4] | listened: music[6] 
+                                                                                |rate : music[7]| <p onclick="showComments(id)">comments</p>
+  </div>
+  if(music[10]!=null): Lyrics?
+  
+   [ [id , name , minutes, seconds, format,
+   listened, rate b(7) DEFAULT X'110010', likes, dislikes, lyric_creator int] ,...] 
+
+ */
+
+
+  dv.innerHTML+=` | length:${musics[j][2]}':${musics[j][3]}" | listened:${musics[j][5]} | rate:${musics[j][6]}`;
+
+  var com = document.createElement("A");
+  com.innerHTML="show comments";
+  com.setAttribute('onclick', "ShowComments({})".replace("{}",musics[j][0]));
+  dv.appendChild(document.createElement("BR"));
+  dv.appendChild(play);
+  if(musics[j][9]!='NULL'){dv.innerHTML+=`<a onclick="ShowLyrics(${musics[j][0]})">Lyric Available</a>`;}
+  else{dv.innerHTML+=`<a onclick="AddLyrics(${musics[j][0]})" style="color:green">Lyric Unavailable</a>`;}
+  dv.appendChild(document.createElement("BR"));
+  dv.appendChild(com);
+
+}
+
+
+}
+
+
+function redirect_user(url){
+window.location.replace("uprof{}".replace("{}",url))
+}
+
+
+function redirect_album(url){
+window.location.replace("album{}".replace("{}",url))
+}
+
+
+function play(music_id){
+  //document.getElementById("chk").innerHTML="play!!";
+}
+
+cnt=document.getElementById("contents");
+
+function ShowComments(music_id){
+        
+	var input = "/comments?q=".concat(music_id);
+
+	var xhttp = new XMLHttpRequest();
+
+        xhttp.open("GET", input, true);
+
+        xhttp.send();
+
+	xhttp.onreadystatechange = function() {
+        if(this.readyState == 4){
+        var comments=JSON.parse(this.responseText);
+
+        on();
+ 	var page=document.getElementById("overlay");
+
+// document.getElementById("chk").innerHTML+=4;
+	for (i = comments.length-1; i >-1; i--){
+
+ 	  var cm = document.createElement("DIV");
+  	  cm.className = "comment";
+
+	  var uname = document.createElement("A");
+          uname.innerHTML=`${comments[i][1]} ${comments[i][2]}`;
+          uname.href=`/uprof${comments[i][0]}`;
+	
+	  var date=document.createElement("P");
+          date.innerHTML=comments[i][3];
+
+          var comnt=document.createElement("P");
+          comnt.innerHTML=comments[i][4];
+
+	  cnt.appendChild(cm);
+
+	  cm.appendChild(uname);
+          cm.appendChild(date);
+	  cm.appendChild(comnt);
+	}   
+	}     
+	};
+}
+
+
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+  document.getElementById("overlay").style.display = "none";document.getElementById("contents").innerHTML="";
+  lyric.style.display = "none";
+  smbtn.style.display = "none";
+
+}
+
+function AddLyrics(music_id){
+  on();
+  lyric.style.display = "block";
+  smbtn.style.display = "block";
+  lyric.disabled = false;
+  current_musicid=music_id;
+
+}
+
+function ShowLyrics(music_id) {
+  on(); lyric.disabled = true; lyric.style.display = "block";
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "/lyric?q=".concat(music_id), true);
+  xhttp.send();
+  xhttp.onreadystatechange = function() {
+  if(this.readyState == 4){
+      lyric.value=JSON.parse(this.responseText);
+  }}
+} 
+
+var current_musicid;
+
+function SendLyric(){
+	
+	var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/addlyric", true);
+
+	//xhttp.setRequestHeader("Content-type", "multipart/form-data");
+	
+	// ?m=${current_musicid}&q=${lyric.value}
+
+	//xhttp.send(current_musicid);	
+
+        xhttp.send(`{{user_id}},${current_musicid}-${lyric.value}`);
+
+        xhttp.onreadystatechange = function() {
+        if(this.readyState == 4){alert("Lyric added successfully! Thanks for contribution!");}
+	}
+}
+
+
+</script>
+
+
+ 
+
+
+
+</body>
+</html>

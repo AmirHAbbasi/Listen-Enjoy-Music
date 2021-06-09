@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="iso8859_6">
+<head><title>LE | Listen & Enjoy !</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+
+.regForm {
+  display:none;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 40px;
+  width: 10%;
+  min-width: 300px;
+  position:absolute;
+  left:10%;
+  transition:0.5s;
+}
+
+
+
+h1 {
+  text-align: center;  
+}
+
+input[type=text] {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+
+}
+
+input[type=password] {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+
+}
+
+
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+
+
+button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+
+
+
+
+</style>
+
+
+</head>
+<body style="background-image: url('elements/bg.png');background-attachment: fixed;background-size: cover;">
+
+
+ 
+<form id="f1" style="background-color: white;display:block;" class="regForm" method="post" action="/login">
+  <h1 id="h1" style="position:absolute;top:0;left:30%;color:blue">Login</h1><br><br>
+  
+  <p style="color:red" id='e0'>{{message}}</p>
+
+
+    <p><input type="text" id="uname" autocomplete="on" placeholder="Username" oninput="this.className = ''" name="uname"></p>
+    <p><input type="password" id="ps" autocomplete="off" placeholder="Password" oninput="this.className = ''" name="ps"></p>
+
+	<p style="color:blue;cursor: pointer;" onclick="forget();this.style.display='none';">Forget your password? Click here!</p>
+	<a style="text-decoration: none;" href="/reg"><p style="color:blue;cursor: pointer;" >No account yet? Register now!</p></a>
+  <div style="overflow:auto;">
+    <div style="float:right;">
+      <button id="lgnbtn" onclick="lgnbtn()">Login</button>
+    </div>
+  </div>
+</form>
+
+
+
+
+<form id="f2" style="  background-color: white;left:42%;top:5%" class="regForm">
+  <div class="tab">Contact Info:
+    <p><input type="text" id="mail" placeholder="E-mail..."  name="email"></p>
+    <p>your birthday?</p>
+
+     <select name="year" id="year"></select>
+
+     <select name="month" id="month"></select>
+
+     <select name="day" id="day"></select>
+
+     <br><br>
+<p style="color:red" id='e1'></p>
+  </div>
+  <p style="color:rgb(255,100,100)" id="checkmail"></p>
+    <div style="float:right;">
+      
+      <button type="button" id="nextBtn3" onclick="forgetbtn()">Send Email</button>
+    </div>
+</form>
+ 
+
+
+ 
+
+<button id="edit" onclick="focusf3();finishb.style.display='none';editb.style.display='none';" style="display:none;position:absolute;top:75%;left:62%;width:11%;background-color:blue">
+  <p style="color:white;font-size:100%">Edit</p>
+    
+</button>
+
+<button id="fin" onclick="sendata()" style="display:none;position:absolute;top:75%;left:75%;width:11%;background-color:blue">
+  <p style="color:white;font-size:100%">Submit</p>
+    
+</button>
+
+
+
+
+
+
+
+
+<script>
+
+var form =document.getElementById('f1');
+var forg = document.getElementById('f2');
+
+
+function forget(){
+	var yy = document.getElementById('year');
+	var mm = document.getElementById('month');
+	var dd = document.getElementById('day');
+
+	for(i=1920;i<2020;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	yy.appendChild(x);
+	}
+
+	for(i=1;i<13;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	mm.appendChild(x);
+	}
+
+
+	for(i=1;i<32;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	dd.appendChild(x);
+	}
+	shaddow(form);
+	show(forg);	
+
+}
+
+
+var list1 = ['uname', 'ps','lgnbtn'];
+
+var list2 = ["nextBtn3", "year",   "month",   "day",  "mail"];
+
+var err0 = document.getElementById("e0");
+ 
+var err1 = document.getElementById("e1");
+
+var embox = document.getElementById("mail");
+
+
+
+
+
+function checkMailBirth(){
+	var inputed;
+	inputed = "/exists?em=".concat(embox.value);
+	
+	inputed = inputed.concat("&bd="+document.getElementById("year").value+"-"+document.getElementById("month").value+"-"+document.getElementById("day").value);	
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+   	if (true) {
+	if(this.responseText=="F"){err1.innerHTML = "Email or birthday is incorrect! (No matched user was found!)";}
+	if(this.responseText=="T"){noerror();forsendata();}
+        }
+        };
+	
+	xhttp.open("GET", inputed, true);
+	xhttp.send();
+}
+
+
+function checkMailBox(){
+
+	if(embox.value<5){err1.innerHTML = "Empty or Invalid Email Address";embox.style="background-color:rgb(255,200,200)";}
+	else{checkMailBirth();}
+
+}
+
+
+function noerror(){
+embox.style="background-color:white";err1.innerHTML="";}
+
+
+
+
+
+
+
+
+
+
+function forgetbtn(){
+	checkMailBox();
+
+}
+
+
+function disable(list){
+	
+	for (i = 0; i < list.length; i++) {
+    		document.getElementById(list[i]).disabled=true;
+  		}
+}
+
+function enable(list){
+	
+	for (i = 0; i < list.length; i++) {
+    		document.getElementById(list[i]).disabled=false;
+  		}
+}
+
+
+
+
+function shaddow(x){
+	x.style.opacity = 0.8;
+
+}
+
+
+function show(x){
+	x.style.display = "block";
+        x.style.opacity = 1;
+}
+
+
+
+
+function lnsendata(){
+	location.replace("/newser?t=");      
+}
+
+
+function forsendata(){
+	location.replace("/elements/forgetpassresult.html");      
+}
+
+
+
+</script>
+</div>
+
+
+  
+
+
+
+</body>
+</html>

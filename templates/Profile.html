@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<style>
+
+h1 {white-space: nowrap;color:black;position:absolute;display: inline}
+h2 {white-space: nowrap;color:black;position:absolute;display: inline}
+
+
+      .wrapper {
+        position:relative;top:60px;
+	left:10px;
+        max-width: 100%;
+        text-align: left;
+        margin-left: 50px;
+        margin-right: auto;
+      }
+      .container {
+        width: 20%;
+        position:absolute;top:10px;
+        margin: 10px;
+        height: 200px;
+        overflow: hidden;
+        float: left;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 25px;
+      }
+      .child {
+        height: 100%;
+        width: 100%;
+        background-size: 250px 200px;
+        background-repeat: no-repeat;
+        -webkit-transition: all .5s;
+        -moz-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
+      }
+      
+      span {
+        display: none;
+        width:90%;
+        font-size: 160%;
+        color: #ffffff !important;
+        font-family: sans-serif;
+        text-align: center;
+        margin: auto;
+        position: relative;
+        top: 20%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 50px;
+        cursor: pointer;
+
+      }
+      .container:hover .child,
+      .container:focus .child {
+        -ms-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -o-transform: scale(1.2);
+        transform: scale(1.2);
+      }
+      .container:hover .child:before,
+      .container:focus .child:before {
+        display: block;
+      }
+      .container:hover span,
+      .container:focus span {
+        display: block;
+      }
+      .child:before {
+        content: "";
+        display: none;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(52, 73, 94, 0.75);
+      }
+      @media screen and (max-width: 960px) {
+        .container {
+          width: 100%;
+          margin: 20px 0;
+        }
+        .wrapper {
+          padding: 20px;
+        }
+      }
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.artistName{
+font-size: 35px;font-size: 15px;}
+
+
+
+.closebtn:hover {
+  color: black;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+<body style="background-color:yellow;">
+
+   
+
+<p id="chk"></p>
+
+
+
+<h1 id="nam">Nasser Abdollahi</h1>
+
+<h2 id="desc">Nasser Al-Abdollahi</h2>
+
+<img id="im"  src="artist_def.png">
+
+<br><br><br><br><br><br><br><br><br>
+
+<img src="/cdn/Covers/user/{{iid}}.png" onerror="javascript:this.src='elements/artist_def.png'">
+
+
+
+<script>
+
+
+
+var im = document.getElementById("im");
+
+im.style="position:absolute;left:{}px;".replace("{}",x);
+
+var name = document.getElementById("nam");
+
+var desc = document.getElementById("desc");
+
+document.getElementById("chk").innerHTML=name.innerHTML;
+
+
+
+name.style.left="100px";
+
+
+
+var y=screen.height;
+
+var x=screen.width;
+
+
+
+
+
+
+
+
+/*
+
+var musics={{offers}};
+
+
+screen.height;
+screen.width;
+
+style="position:absolute;top:100px;left:10%;width:550px;height:600px;"
+
+
+
+Genre X
+
+ArtistX more songs:
+
+
+
+
+var keys = Object.keys(musics);
+
+
+for (i = 0; i < keys.length; i++){
+
+
+
+var hdr = document.createElement("H1");
+hdr.style="left:{}%".replace("{}", left+2);
+hdr.innerHTML=keys[i];
+var wr = document.createElement("DIV");   
+wr.className = "wrapper";
+
+document.body.appendChild(wr);
+wr.appendChild(hdr);
+var elms =musics[keys[i]];
+
+
+var leng = elms.length;
+
+// document.getElementById("chk").innerHTML=leng%2;
+
+for (j = 0; j <leng; j++) {
+    
+  
+  var dv = document.createElement("DIV");
+  dv.className = "container";
+  var chld = document.createElement("DIV");
+
+  chld.className = "child";
+
+  
+  if(j%2==1){dv.style="top:220px;left:{}%".replace("{}", left);left=left+25;}
+  else{dv.style="left:{}%".replace("{}", left);if(j==leng-1){left=left+25;}}
+
+  if(elms[j][2]=="NULL"){chld.style="background-image: url('album_def.png')";}
+  else{chld.style="background-image: url(/elms[j][2])";}
+
+  var alb= document.createElement("SPAN");
+  var artst =document.createElement("SPAN");
+
+  alb.innerHTML=elms[j][0];
+  artst.innerHTML=elms[j][1];
+  wr.appendChild(dv);
+  dv.appendChild(chld);
+  chld.appendChild(alb);
+  artst.className = "artistName";
+  chld.appendChild(artst);
+  
+}
+
+}
+
+
+*/
+
+function play(music_id){
+}
+
+
+</script>
+
+
+
+  
+
+
+
+</body>
+</html>

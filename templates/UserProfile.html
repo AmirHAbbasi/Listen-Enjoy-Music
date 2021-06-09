@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<style>
+
+#nam {white-space: nowrap;color:black;position:absolute;display: inline;}
+h2 {white-space: nowrap;color:black;position:absolute;display: inline;}
+img{position:absolute;border-radius: 50px;}
+
+.alert {
+  border-radius: 50px;padding: 20px;
+  background-color: #f44336;
+  color: white;
+
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+
+      .wrapper {
+        position:relative;top:60px;
+	left:10px;
+        max-width: 100%;
+        text-align: left;
+        margin-left: 50px;
+        margin-right: auto;
+      }
+      .container {
+        position:absolute;
+        margin: 10px;
+        overflow: hidden;
+        float: left;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 25px;
+      }
+      .child {
+        height: 100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size:100% 100%;
+        -webkit-transition: all .5s;
+        -moz-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
+      }
+      
+      span {
+        display: none;
+        width:90%;
+        font-size: 160%;
+        color: #ffffff !important;
+        font-family: sans-serif;
+        text-align: center;
+        margin: auto;
+        position: relative;
+        top: 20%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 50px;
+        cursor: pointer;
+
+      }
+      .container:hover .child,
+      .container:focus .child {
+        -ms-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -o-transform: scale(1.2);
+        transform: scale(1.2);
+      }
+      .container:hover .child:before,
+      .container:focus .child:before {
+        display: block;
+      }
+      .container:hover span,
+      .container:focus span {
+        display: block;
+      }
+      .child:before {
+        content: "";
+        display: none;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(52, 73, 94, 0.75);
+      }
+      @media screen and (max-width: 960px) {
+        .container {
+          width: 100%;
+          margin: 20px 0;
+        }
+        .wrapper {
+          padding: 20px;
+        }
+      }
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.artistName{
+font-size: 35px;font-size: 15px;}
+
+
+
+.closebtn:hover {
+  color: black;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+<body style="background-color:yellow;">
+
+
+
+<p id="chk"></p>
+
+
+
+<h1 id="nam">{{user_info['name']}} {{user_info['lname']}}</h1>
+
+<h2 id="desc">{{user_info['uname']}} | {{user_info['type']}} | {{user_info['birthday']}}</h2>
+
+
+<img id="im" src="/cdn/Covers/user/{{iid}}.png" onerror="this.src='elements/artist_def.png'">
+
+
+
+
+<script>
+
+
+var y=screen.height;
+
+var x=screen.width;
+
+
+
+var albums ={{albums|safe}};  
+
+
+
+// [[user_id, uname, content],...]  
+
+comments = {{comments}}
+
+var cleng = comments.length;
+var aleng = albums.length;
+
+
+window.onload = function () {
+    var im = document.getElementById("im");
+    
+    var desc = document.getElementById("desc");
+    var name = document.getElementById("nam");
+    
+    
+    name.style.left=(x/10).toString().concat("px");
+    desc.style.left=(x/10).toString().concat("px");
+
+    desc.style.top=(y/10).toString().concat("px");
+    name.style.top=(y/20).toString().concat("px");
+
+    im.style.top=(y/5).toString().concat("px");
+    im.style.left=(x/10).toString().concat("px");
+
+    im.style.width=(x/5).toString().concat("px");
+    im.style.height=(y/2.5).toString().concat("px");;
+
+var top =16*y/100;
+
+var left =30*x/100;
+
+var dx=5*x/100;
+var dy=5*y/100;
+
+var h=y/3;
+var w=x/5;
+
+if(aleng>0){var albumh = document.createElement("H2");document.body.appendChild(albumh);albumh.style=`left:${left}px;top:${top}px`;
+albumh.innerHTML="Albums";}
+	
+for (j = 0; j <aleng; j++) {
+    
+ 
+
+  var dv = document.createElement("DIV");
+  dv.className = "container";
+  var chld = document.createElement("DIV");
+
+  chld.className = "child";
+  
+  //chld.style.backgroundImage.backgroundSize="5000px 5000px";
+  
+  chld.style.backgroundImage="url('/cdn/Covers/album/{}.png') , url('elements/album_def.png')".replace("{}",albums[j][0]);
+
+ 
+  
+
+  dv.style=`position:absolute;left:${left}px;top:${dy+top}px;height:${h}px;width:${w}px`;  
+  left=left+dx+w;
+
+  dv.setAttribute('onclick', "redirect_album({})".replace("{}",albums[j][0]));
+
+  var alb= document.createElement("SPAN");
+
+  alb.innerHTML=albums[j][2];
+
+  var dscr= document.createElement("SPAN");
+  dscr.innerHTML=albums[j][5];
+  
+
+  document.body.appendChild(dv);
+  dv.appendChild(chld);
+  chld.appendChild(alb);
+  chld.appendChild(dscr);
+
+
+}
+
+
+
+
+if(cleng>0){var comh = document.createElement("H2");document.body.appendChild(comh);comh.style=`left:${left}px;top:${top}px`;
+comh.innerHTML="Comments";}
+
+
+var init_top=50+top;
+
+top=init_top;
+	
+for (j = 0; j <cleng; j++) {
+    
+	/*
+	<div class="alert info">
+	  <strong>Info!</strong><br> Indicates a neutral informative change or action.
+	</div>*/
+  
+  // [[user_id, uname, content],...]  comments = [[12,"AbdollahZadeh","Bad!\nvery not!!\tbad bad bad"],[1,"Nasserian1345","Good!"]]
+
+
+  var cdiv = document.createElement("DIV");
+  cdiv.className = "alert info";
+  var unm = document.createElement("STRONG");
+  unm.style.cursor="pointer";
+
+  unm.setAttribute('onclick', `redirect_user(${comments[j][0]})`);
+  
+    
+
+  unm.innerHTML=comments[j][1];
+
+  
+
+  
+  
+  cdiv.style=`border-radius: 50px;padding: 20px;background-color: #f44336;color: white;position:absolute;left:${left}px;top:${top}px;width:${w}px;max-height:${h}px;min-height:${h/20}px;`;  
+  
+
+
+
+  document.body.appendChild(cdiv);
+  
+  cdiv.appendChild(unm);
+  cdiv.appendChild(document.createElement("BR"));
+  cdiv.innerHTML+=comments[j][2];
+
+  top+=dy+cdiv.offsetHeight;
+  if(top>init_top+h){left=left+dx+w;top=init_top;}
+  
+
+  
+
+}
+
+
+
+
+
+};
+
+
+function redirect_user(url){
+window.location.replace("uprof{}".replace("{}",url))
+}
+
+
+function redirect_album(url){
+window.location.replace("album{}".replace("{}",url))
+}
+
+
+function SVGMAKER(){
+
+/*
+<svg height="150" width="400">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="300" height="100" fill="url(#grad1)" />
+  <text fill="#ffffff" font-size="45" font-family="Verdana" x="0" y="40%">SVGta</text>
+  Sorry, your browser does not support inline SVG.
+</svg>
+*/
+
+
+}
+
+
+function play(music_id){
+}
+
+
+</script>
+
+
+
+  
+
+
+
+</body>
+</html>

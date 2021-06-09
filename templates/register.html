@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="iso8859_6">
+<head><title>LE | Listen & Enjoy !</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+
+.regForm {
+  display:none;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 40px;
+  width: 10%;
+  min-width: 300px;
+  position:absolute;
+  left:10%;
+  transition:0.5s;
+}
+
+
+
+h1 {
+  text-align: center;  
+}
+
+input[type=text] {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+
+}
+
+input[type=password] {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+
+}
+
+
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+
+
+button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+
+
+
+
+</style>
+
+
+</head>
+<body style="background-image: url('elements/bg-imaged-sh.png');background-attachment: fixed;background-size: cover;">
+
+
+ 
+<form id="f1" style="  background-color: green;display:block;" class="regForm">
+  <h1 id="h1" style="position:absolute;top:0;left:30%;color:white">Register</h1><br><br>
+  <input checked="checked" type="radio" id="user" name="type" value="user">  
+  <label style="color:white" for="user">User account</label>
+  <br>
+  <input type="radio" id="artist" name="type" value="artist">  
+  <label style="color:white" for="artist">Artist account</label>
+  <br>
+  <p style="color:rgb(255,100,100)" id='err1'></p>
+
+
+    <p><input type="text" id="fname" autocomplete="off" placeholder="First name..." oninput="this.className = ''" name="fname"></p>
+    <p><input type="text" id="lname" autocomplete="off" placeholder="Last name..." oninput="this.className = ''" name="lname"></p>
+
+  <div style="overflow:auto;">
+    <div style="float:right;">
+      <button type="button" id="nextBtn1" onclick="checkf1()">Next</button>
+    </div>
+  </div>
+</form>
+
+<form id="f2" style="  background-color: pink;left:36%" class="regForm">
+  <div class="tab">Account Info:
+    <p style="color:rgb(255,100,100)" id='checkuser'></p>
+    <p><input type="text" oninput="checkUser()" placeholder="Username..." oninput="this.className = ''"  id="uname" name="uname"></p>
+    <br><br><p id="checkpass" style="color:rgb(255,100,100)"></p>
+    <p><input id="pass" type="password" placeholder="Password... " oninput="this.className = ''" name="ps"></p>
+    <p><input id="repass" type="password" placeholder="Re-Enter Password... " oninput="this.className = ''" name="phone"></p>
+  </div>
+    <div style="float:right;">
+      <button type="button" id="prevBtn2" onclick="focusf1()">Previous</button>
+      <button type="button" id="nextBtn2" onclick="checkf2()">Next</button>
+    </div>
+</form>
+
+
+
+
+<form id="f3" style="  background-color: yellow;left:62%" class="regForm">
+  <div class="tab">Contact Info:
+    <p><input type="text" id="mail" placeholder="E-mail..."  name="email"></p>
+    <p>your birthday?</p>
+
+<select name="year" id="year">
+
+  </select>
+
+<select name="month" id="month">
+
+  </select>
+
+<select name="day" id="day">
+
+  </select>
+<br><br>
+
+
+    <input type="checkbox" id="accept" name="tos"> I accept <a href="elements/tos.html">terms of services</a><br><br>
+  </div>
+  <p style="color:rgb(255,100,100)" id="checkmail"></p>
+    <div style="float:right;">
+      <button type="button" id="prevBtn3" onclick="focusf2()">Previous</button>
+      <button type="button" id="nextBtn3" onclick="checkf3()">Submit</button>
+    </div>
+</form>
+ 
+
+
+<button id="edit" onclick="focusf3();finishb.style.display='none';editb.style.display='none';" style="display:none;position:absolute;top:75%;left:62%;width:11%;background-color:blue">
+  <p style="color:white;font-size:100%">Edit</p>
+    
+</button>
+
+<button id="fin" onclick="sendata()" style="display:none;position:absolute;top:75%;left:75%;width:11%;background-color:blue">
+  <p style="color:white;font-size:100%">Submit</p>
+    
+</button>
+
+
+
+
+
+
+
+
+<script>
+
+var yy = document.getElementById('year');
+var mm = document.getElementById('month');
+var dd = document.getElementById('day');
+
+for(i=1920;i<2020;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	yy.appendChild(x);
+}
+
+for(i=1;i<13;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	mm.appendChild(x);
+}
+
+
+for(i=1;i<32;i++){
+	var x = document.createElement("OPTION");
+	x.setAttribute("value", i);
+	x.appendChild(document.createTextNode(i));
+	dd.appendChild(x);
+}
+
+
+
+
+
+var list1 = ['artist','user','fname','lname','nextBtn1'];
+var list2 = ["uname",  "pass",  "repass",  "prevBtn2", "nextBtn2"];
+var list3 = ["accept", "mail", "prevBtn3", "nextBtn3", "day", "month", "year"];
+
+var f1 = document.getElementById('f1');
+var f2 =document.getElementById('f2');
+var f3 = document.getElementById('f3');
+
+var editb = document.getElementById('edit');
+var finishb =document.getElementById('fin');
+
+
+var st3 = false;
+
+
+
+function disable(list){
+	
+	for (i = 0; i < list.length; i++) {
+    		document.getElementById(list[i]).disabled=true;
+  		}
+}
+
+function enable(list){
+	
+	for (i = 0; i < list.length; i++) {
+    		document.getElementById(list[i]).disabled=false;
+  		}
+}
+
+
+function shaddow(x){
+	x.style.opacity = 0.8;
+
+}
+
+
+function show(x){
+	x.style.display = "block";
+        x.style.opacity = 1;
+}
+
+
+function focusf1(){
+	shaddow(f2);
+	shaddow(f3);
+	disable(list2.concat(list3));  
+	enable(list1);
+	show(f1);
+}
+
+function focusf2(){
+	shaddow(f1);
+	shaddow(f3);
+	disable(list1.concat(list3)); 
+	enable(list2); 
+	show(f2);
+}
+
+function focusf3(){
+	shaddow(f1);
+	shaddow(f2);
+	disable(list1.concat(list2));  
+	enable(list3);
+	show(f3);	
+}
+
+
+function checkf1(){
+	var first = document.getElementById('fname');
+	var last = document.getElementById('lname');
+	var err = document.getElementById('err1');
+
+	if(first.value.length<2){err.innerHTML = "your first name must be more than two letters!";first.style="background-color:rgb(255,200,200)";}
+
+	else if(last.value.length<2){first.style="background-color:white";err.innerHTML = "your last name must be more than two letters!";last.style="background-color:rgb(255,200,200)";}
+
+	else{last.style="background-color:white";err.innerHTML="";focusf2();}
+}
+
+
+var validf2 = false;
+
+
+function checkUser(){
+	var input=document.getElementById("uname");
+	if(!/^[a-zA-Z0-9+_.-]+$/.test(input.value)){document.getElementById("checkuser").innerHTML = "username is invalid!";checku=0;}
+	else{
+	input = "/check?q=".concat(input.value)
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+   	if (this.readyState == 4 && this.status == 200) {
+	if(this.responseText=="V"){document.getElementById("checkuser").innerHTML = "username is invalid!";checku=0;input.style="background-color:rgb(255,200,200)";}
+	else if(this.responseText=="T"){document.getElementById("checkuser").innerHTML = "This username already exists!";checku=0;input.style="background-color:rgb(255,200,200)";}
+	else{validf2=true;input.style="background-color:white";document.getElementById("checkuser").innerHTML = "";checku=1;}
+        }
+        };
+	
+	xhttp.open("GET", input, true);
+	xhttp.send();
+	}
+}
+
+
+
+function checkf2(){
+	var psd = document.getElementById('pass');
+	var repsd = document.getElementById('repass');
+	var err = document.getElementById("checkpass");
+
+	if(psd.value.length<8){err.innerHTML = "Password must be at least 8 characters!";psd.style="background-color:rgb(255,200,200)";}
+
+	else if(repsd.value!=psd.value){psd.style="background-color:white";err.innerHTML = "Wrong Re-Entered Pssword!";repsd.style="background-color:rgb(255,200,200)";}
+
+	else{repsd.style="background-color:white";err.innerHTML="";if(validf2){focusf3();}}
+}
+
+function checkf3(){
+	var email = document.getElementById('mail');
+	var tos = document.getElementById('accept');
+	var err = document.getElementById("checkmail");
+	if(!/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(email.value)){err.innerHTML = "Invalid E-mail address!";email.style="background-color:rgb(255,200,200)";}
+	else if(!tos.checked){err.innerHTML = "You have to accept our terms of services!";email.style="background-color:white";}
+	else{err.innerHTML = "";email.style="background-color:white";ready();}
+}
+
+
+
+
+
+function ready(){
+	shaddow(f3);
+	disable(list3);
+	
+	finishb.style.display="block";
+	editb.style.display="block";
+
+	 
+}
+
+function sendata(){
+	location.replace("/newser?t="+document.getElementById("user").checked+"&u="+document.getElementById("uname").value+"&p="+document.getElementById("pass").value+"&m="+document.getElementById("mail").value+"&year="+document.getElementById("year").value+"&month="+document.getElementById("month").value+"&day="+document.getElementById("day").value+"&firstName="+document.getElementById("fname").value+"&LName="+document.getElementById("lname").value);      
+}
+
+
+
+</script>
+</div>
+
+
+  
+
+
+
+</body>
+</html>
